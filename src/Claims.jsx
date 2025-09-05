@@ -77,11 +77,18 @@ function Claims() {
     setLoading(true);
     setError(null);
     try {
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
-  const res = await axios.post(`${backendUrl}/claims`, form);
+      const backendUrl = import.meta.env.VITE_BACKEND_URL;
+      const res = await axios.post(`${backendUrl}/claims`, form);
       setResult(res.data);
     } catch (err) {
-      setError(err.message);
+      // Robust error handling for backend errors
+      if (err.response && err.response.data && err.response.data.detail) {
+        setError(err.response.data.detail);
+      } else if (err.message) {
+        setError(err.message);
+      } else {
+        setError('An unknown error occurred.');
+      }
     }
     setLoading(false);
   };
