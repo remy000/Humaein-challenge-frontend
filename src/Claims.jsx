@@ -4,6 +4,7 @@ import axios from 'axios';
 
 function Claims() {
   const [clinicalDocs, setClinicalDocs] = useState([]);
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const [selectedDocId, setSelectedDocId] = useState('');
   const [form, setForm] = useState({
     patient_name: '',
@@ -19,7 +20,6 @@ function Claims() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
   axios.get(`${backendUrl}/clinical-documentation/authorized`)
       .then(res => setClinicalDocs(res.data))
       .catch(() => setClinicalDocs([]));
